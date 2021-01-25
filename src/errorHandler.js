@@ -9,14 +9,12 @@ const unauthorized = (err, req, res, next) => {
   if (err.httpStatusCode === 401) {
     res.status(401).send("Error 401, Unauthorized");
   }
-  console.log(err);
   next(err);
 };
 const badRequestHandler = (err, req, res, next) => {
   if (err.httpStatusCode === 400) {
     res.status(400).send(err);
   }
-  console.log(err);
   //we need to put next so that if it doesn't match the if criteria goes to the next handler
   next(err);
 };
@@ -24,7 +22,6 @@ const forbidden = (err, req, res, next) => {
   if (err.httpStatusCode === 403) {
     res.status(403).send("Error 403, Forbidden");
   }
-  console.log(err);
   next(err);
 };
 
@@ -32,7 +29,6 @@ const notFound = (err, req, res, next) => {
   if (err.httpStatusCode === 404) {
     res.status(404).send("Error 404, Not Found");
   }
-  console.log(err);
   next(err);
 };
 
