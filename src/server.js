@@ -34,13 +34,12 @@ app.use(express.json());
 // Endpoints
 
 app.use("/", servicesRoutes);
+
 app.use(unauthorized);
 app.use(forbidden);
 app.use(notFound);
 app.use(badRequestHandler);
 app.use(catchAll);
-
-// console.log(listEndpoints(app));
 
 mongoose
   .connect(process.env.MONGO_CONNECTION, {

@@ -11,7 +11,7 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "striveTest",
+    folder: process.env.FOLDER_NAME,
     allowedFormats: ["jpg", "png", "jpeg"],
   },
 });

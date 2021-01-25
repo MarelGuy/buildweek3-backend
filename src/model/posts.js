@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const q2m = require("query-to-mongo");
 const { APIError } = require("../utils");
-const ProfileSchema = require("./profiles");
+
 const PostsSchema = new Schema(
   {
     text: { type: String, required: true },
