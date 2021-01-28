@@ -8,9 +8,22 @@ const requestIp = require("request-ip");
 
 const ProfileSchema = require("../../model/profiles");
 
+
+
+
+
+
 app.get("/", async (req, res, next) => {
   try {
-    const profiles = await ProfileSchema.find();
+    
+    const searchName = `/${req.query.name}/i`
+    const searchSurname = `/${req.query.surname}/i`
+    console.log(searchName)
+    console.log(req.query.name)
+     const regex = new RegExp(req.query.name, "ig")
+
+     const profiles = await ProfileSchema.find({$or:[{"name":regex}, {"surname":regex }]});
+ 
     const clientIp = requestIp.getClientIp(req);
 
     if (profiles.length > 0) {
@@ -106,15 +119,26 @@ app.post(
   uploadCloudinary.single("image"),
   async (req, res, next) => {
     try {
-      const clientIp = requestIp.getClientIp(req);
-      res.status(201).send("Image uploaded on product id:" + req.params.id);
-      console.log(
-        "\x1b[32m",
-        clientIp + " uploaded an image on product id: " + req.params.id
+
+      const addPicture = await ProfileSchema.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: {
+            image: req.file.path,
+          },
+        }
       );
-    } catch (err) {
-      console.log("\x1b[31m", err);
-      next(err);
+      if (addPicture) {
+        res.status(200).send(addPicture);
+      } else {
+        const err = new Error();
+        err.message = `Profile Id: ${req.params.id} not found`;
+        err.httpStatusCode = 404;
+        next(err);
+      }
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
   }
 );
